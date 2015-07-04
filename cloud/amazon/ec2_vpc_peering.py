@@ -106,13 +106,18 @@ EXAMPLES = '''
   state: 'absent'
 '''
 
-from boto.exception import EC2ResponseError
 from operator import attrgetter, itemgetter
 
-import boto.iam
-import boto.vpc
 import re
 import time
+
+try:
+    import boto.iam
+    import boto.vpc
+    from boto.exception import EC2ResponseError
+    HAS_BOTO = True
+except ImportError:
+    HAS_BOTO = False
 
 
 CIDR_RE = re.compile('^(\d{1,3}\.){3}\d{1,3}\/\d{1,2}$')
@@ -555,6 +560,9 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec,
         supports_check_mode=True)
+
+    if not HAS_BOTO:
+        module.fail_json(msg='boto required for this module')
 
     region, ec2_url, boto_params = get_aws_connection_info(module)
     desired_state = module.params.get('state')
