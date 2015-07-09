@@ -577,18 +577,25 @@ def main():
             msg='source_vpc and dest_vpc required unless state="list"')
 
     if desired_state in ('list',):
-        action = lambda: vpcpmod.list_all()
+        try:
+            results = vpcpmod.list_all()
+        except ValueError, e:
+            module.fail_json(msg="failed to list vpc peering: %s" % e.message)
     elif desired_state in ('present', 'active'):
-        action = lambda: vpcpmod.ensure_present(want_active=True)
+        try:
+            results = vpcpmod.ensure_present(want_active=True)
+        except ValueError, e:
+            module.fail_json(msg="failed to create active vpc peering: %s" % e.message)
     elif desired_state in ('pending',):
-        action = lambda: vpcpmod.ensure_present()
+        try:
+            results = vpcpmod.ensure_present()
+        except ValueError, e:
+            module.fail_json(msg="failed to create vpc peering: %s" % e.message)
     elif desired_state in ('absent',):
-        action = lambda: vpcpmod.ensure_absent()
-
-    try:
-        results = action()
-    except ValueError, e:
-        module.fail_json(msg=e.message)
+        try:
+            results = vpcpmod.ensure_absent()
+        except ValueError, e:
+            module.fail_json(msg="failed to delete vpc peering: %s" % e.message)
 
     changed = results[0]
     items = map(connection_as_dict, results[1])
