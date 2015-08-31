@@ -11,7 +11,9 @@ description:
     - Create, list or reject/delete AWS VPC peering connections.
     - This module has a dependency on python-boto
 version_added: "2.0"
-author: Herby Gillot <herby.gillot@gmail.com>
+author:
+    - "Herby Gillot <herby.gillot@gmail.com>"
+    - "Lei Wang (@tendant)"
 notes:
     - You can specify VPCs via their VPC ID, CIDR block or tagged name.  If you use a CIDR or name and it matches more than one VPC, the module will abort, at which point you'd need to use something more specific (like the VPC's ID).
     - This module uses the account ID of the current AWS API user to determine whether or not it can or cannot accept a peering connection that is pending acceptance.  The 'force' flag can be used skip this check, and will attempt acceptance of every pending-acceptance connection seen, no matter what the accepting account ID is.
