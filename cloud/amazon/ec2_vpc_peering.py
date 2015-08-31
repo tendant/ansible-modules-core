@@ -12,7 +12,7 @@ description:
     - This module has a dependency on python-boto
 version_added: "2.0"
 author:
-    - "Herby Gillot <herby.gillot@gmail.com>"
+    - "Herby Gillot (@herbygillot) <herby.gillot@gmail.com>"
     - "Lei Wang (@tendant)"
 notes:
     - You can specify VPCs via their VPC ID, CIDR block or tagged name.  If you use a CIDR or name and it matches more than one VPC, the module will abort, at which point you'd need to use something more specific (like the VPC's ID).
